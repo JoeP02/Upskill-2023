@@ -106,6 +106,7 @@ void UEOSGameInstance::OnCreateSessionComplete(FName SessionName, bool bWasSucce
 		if (IOnlineSessionPtr SessionPtr = OnlineSubsystem->GetSessionInterface())
 		{
 			SessionPtr->ClearOnCreateSessionCompleteDelegates(this);
+			GetWorld()->ServerTravel(FString("ThirdPersonExampleMap?listen"), false);
 		}
 	}
 }
@@ -135,6 +136,40 @@ void UEOSGameInstance::OnDestroySessionComplete(FName SessionName, bool bWasSucc
 		{
 			SessionPtr->ClearOnDestroySessionCompleteDelegates(this);
 		}
+	}
+}
+
+void UEOSGameInstance::FindSession()
+{
+	if (bIsLoggedIn)
+	{
+		if (OnlineSubsystem)
+		{
+			if (IOnlineSessionPtr SessionPtr = OnlineSubsystem->GetSessionInterface())
+			{
+				SearchSettings = MakeShareable(new FOnlineSessionSearch());
+				SearchSettings->QuerySettings.Set(SEARCH_KEYWORDS, FString("UpskillLobby"), EOnlineComparisonOp::Equals);
+				SearchSettings->QuerySettings.Set(SEARCH_LOBBIES, true, EOnlineComparisonOp::Equals);
+				
+				SessionPtr->OnFindSessionsCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnFindSessionComplete);
+				SessionPtr->FindSessions(0, SearchSettings.ToSharedRef());
+			}
+		}
+	}
+}
+
+void UEOSGameInstance::OnFindSessionComplete(bool bWasSuccessful)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Success: %d"), bWasSuccessful);
+	
+	if (bWasSuccessful)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Found %d Lobbies"), SearchSettings->SearchResults.Num());
+	}
+	
+	if (IOnlineSessionPtr SessionPtr = OnlineSubsystem->GetSessionInterface())
+	{
+		SessionPtr->ClearOnFindSessionsCompleteDelegates(this);
 	}
 }
 

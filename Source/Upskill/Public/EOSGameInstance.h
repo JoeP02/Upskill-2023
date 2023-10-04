@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "OnlineSessionSettings.h"
 #include "Engine/GameInstance.h"
 #include "EOSGameInstance.generated.h"
 
@@ -28,6 +29,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DestroySession();
 	void OnDestroySessionComplete(FName SessionName, bool bWasSuccessful);
+
+	UFUNCTION(BlueprintCallable)
+	void FindSession();
+	TSharedPtr<FOnlineSessionSearch> SearchSettings;
+	void OnFindSessionComplete(bool bWasSuccessful);
 
 	UFUNCTION(BlueprintCallable)
 	void GetAllFriends();
