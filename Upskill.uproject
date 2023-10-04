@@ -2,5 +2,33 @@
 	"FileVersion": 3,
 	"EngineAssociation": "4.27",
 	"Category": "",
-	"Description": ""
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "Upskill",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "OnlineSubsystemEOS",
+			"Enabled": true
+		},
+		{
+			"Name": "EOSShared",
+			"Enabled": true
+		},
+		{
+			"Name": "EOSVoiceChat",
+			"Enabled": true
+		},
+		{
+			"Name": "OnlineSubsystemSteam",
+			"Enabled": true
+		}
+	]
 }
