@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "OnlineSessionSettings.h"
 #include "Engine/GameInstance.h"
+#include "Interfaces/OnlineSessionInterface.h"
 #include "EOSGameInstance.generated.h"
 
 /**
@@ -34,6 +35,8 @@ public:
 	void FindSession();
 	TSharedPtr<FOnlineSessionSearch> SearchSettings;
 	void OnFindSessionComplete(bool bWasSuccessful);
+
+	void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
 
 	UFUNCTION(BlueprintCallable)
 	void GetAllFriends();
