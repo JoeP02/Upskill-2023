@@ -7,6 +7,8 @@
 *.o
 *.obj
 
+*.bat
+
 # Precompiled Headers
 *.gch
 *.pch
@@ -73,3 +75,6 @@ Plugins/Developer/RiderLink/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+run.bat
+*.bat
