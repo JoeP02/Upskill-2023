@@ -33,7 +33,7 @@ void UEOSGameInstance::Login()
 		if (IOnlineIdentityPtr Identity = OnlineSubsystem->GetIdentityInterface())
 		{
 			FOnlineAccountCredentials Credentials;
-			Credentials.Type = FString("developer");
+			Credentials.Type = FString("accountportal");
 			
 			if (Credentials.Type == FString("developer"))
 			{
@@ -89,12 +89,38 @@ void UEOSGameInstance::CreateSession()
 
 				SessionPtr->OnCreateSessionCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnCreateSessionComplete);
 				SessionPtr->CreateSession(0, DemoSessionName, SessionSettings);
+
+				UE_LOG(LogTemp, Warning, TEXT("Creating Session"));
 			}
 		}
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("Session Cannot Be Created: User Not Logged In"));
+		// If Not Logged In Create A LAN Session
+		if (OnlineSubsystem)
+		{
+			if (IOnlineSessionPtr SessionPtr = OnlineSubsystem->GetSessionInterface())
+			{
+				FOnlineSessionSettings SessionSettings;
+				SessionSettings.bIsDedicated = false;
+				SessionSettings.bIsLANMatch = true;
+				SessionSettings.bShouldAdvertise = true;
+				SessionSettings.NumPublicConnections = 5;
+				SessionSettings.bAllowJoinInProgress = true;
+				SessionSettings.bAllowJoinViaPresence = true;
+				SessionSettings.bUsesPresence = true;
+				SessionSettings.bUseLobbiesIfAvailable = false;
+
+				SessionSettings.Set(SEARCH_KEYWORDS, FString("UpskillLobby"), EOnlineDataAdvertisementType::ViaOnlineService);
+
+				SessionPtr->OnCreateSessionCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnCreateSessionComplete);
+				SessionPtr->CreateSession(0, DemoSessionName, SessionSettings);
+
+				UE_LOG(LogTemp, Warning, TEXT("Creating LAN Game"));
+			}
+		}
+
+		// UE_LOG(LogTemp, Error, TEXT("Session Cannot Be Created: User Not Logged In"));
 	}
 }
 
@@ -107,7 +133,7 @@ void UEOSGameInstance::OnCreateSessionComplete(FName SessionName, bool bWasSucce
 		if (IOnlineSessionPtr SessionPtr = OnlineSubsystem->GetSessionInterface())
 		{
 			SessionPtr->ClearOnCreateSessionCompleteDelegates(this);
-			GetWorld()->ServerTravel(FString("ThirdPersonExampleMap?listen"), false);
+			GetWorld()->ServerTravel("/Game/Levels/Lobby?listen");
 		}
 	}
 }
@@ -154,6 +180,23 @@ void UEOSGameInstance::FindSession()
 				
 				SessionPtr->OnFindSessionsCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnFindSessionComplete);
 				SessionPtr->FindSessions(0, SearchSettings.ToSharedRef());
+				UE_LOG(LogTemp, Warning, TEXT("Starting Lobby Search"));
+			}
+		}
+	}
+	else
+	{
+		if (OnlineSubsystem)
+		{
+			if (IOnlineSessionPtr SessionPtr = OnlineSubsystem->GetSessionInterface())
+			{
+				SearchSettings = MakeShareable(new FOnlineSessionSearch());
+				SearchSettings->QuerySettings.Set(SEARCH_KEYWORDS, FString("UpskillLobby"), EOnlineComparisonOp::Equals);
+				SearchSettings->QuerySettings.Set(SEARCH_LOBBIES, true, EOnlineComparisonOp::Equals);
+
+				SessionPtr->OnFindSessionsCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnFindSessionComplete);
+				SessionPtr->FindSessions(0, SearchSettings.ToSharedRef());
+				UE_LOG(LogTemp, Warning, TEXT("Starting Lobby Search"));
 			}
 		}
 	}
