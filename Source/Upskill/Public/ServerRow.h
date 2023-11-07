@@ -24,5 +24,8 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		class UTextBlock* txt_Ping;
 
+	UPROPERTY(BlueprintReadOnly)
+		bool Selected = false;
+
 	void Setup(class UMainMenu* Parent, uint32 indexIndex);
 };

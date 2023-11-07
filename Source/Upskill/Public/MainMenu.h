@@ -59,12 +59,9 @@ private:
 		class UButton* btn_Quit;
 
 	// UJoinGameScreen* JoinGameScreen;
-
-	/*
+	
 	UPROPERTY(Meta = (BindWidget))
 		class UJoinGameScreen* WBP_JoinGameScreen;
-
-		*/
 
 	UPROPERTY(Meta = (BindWidget))
 		class UWidget* WBP_HostGameScreen;

@@ -2,6 +2,7 @@
 
 #include "MainMenu.h"
 
+#include "JoinGameScreen.h"
 #include "ServerRow.h"
 #include "Components/Button.h"
 #include "Components/ComboBoxString.h"
@@ -60,11 +61,9 @@ bool UMainMenu::Initialize()
 	if (!ensure(SinglePlayGameButton != nullptr)) return false;
 	SinglePlayGameButton->OnClicked.AddDynamic(this, &UMainMenu::StartSinglePlay);
 	*/
-
-	/*
+	
 	JoinGameButton = WBP_JoinGameScreen->btn_JoinSelectedGame;
 	JoinGameButton->OnClicked.AddDynamic(this, &UMainMenu::JoinServer);
-	*/
 
 	return true;
 }
@@ -128,7 +127,6 @@ void UMainMenu::SelectIndex(uint32 Index)
 
 void UMainMenu::UpdateChildren()
 {
-	/*
 	for (int32 i = 0; i < WBP_JoinGameScreen->SessionList->GetChildrenCount(); ++i)
 	{
 		auto Row = Cast<UServerRow>(WBP_JoinGameScreen->SessionList->GetChildAt(i));
@@ -136,8 +134,7 @@ void UMainMenu::UpdateChildren()
 		{
 			Row->Selected = (SelectedIndex.IsSet() && SelectedIndex.GetValue() == i);
 		}
-	}
-	*/
+	} 
 }
 
 void UMainMenu::JoinServer()
@@ -155,7 +152,7 @@ void UMainMenu::JoinServer()
 
 void UMainMenu::OpenJoinMenu()
 {
-	/*
+	
 	if (!ensure(ContextMenu != nullptr)) return;
 	if (!ensure(WBP_JoinGameScreen != nullptr)) return;
 	ContextMenu->SetActiveWidget(WBP_JoinGameScreen);
@@ -164,7 +161,6 @@ void UMainMenu::OpenJoinMenu()
 		UE_LOG(LogTemp, Warning, TEXT("Open Join Menu - Ready To Refresh"));
 		MenuInterface->RefreshServerList();
 	}
-	*/
 }
 
 void UMainMenu::OpenHostMenu()
