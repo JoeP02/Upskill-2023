@@ -114,7 +114,7 @@ void UMainMenu::SetServerList(TArray<FServerData> ServerNames)
 		Row->Setup(this, i);
 		++i;
 
-		// WBP_JoinGameScreen->SessionList->AddChild(Row);
+		WBP_JoinGameScreen->SessionList->AddChild(Row);
 	}
 }
 

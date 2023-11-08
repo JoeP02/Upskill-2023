@@ -261,9 +261,7 @@ void UEOSGameInstance::CreateSession()
 	}
 	else
 	{
-		ErrorScreenInstance = CreateWidget<UErrorMenu>(GetWorld(), ErrorScreen);
-		ErrorScreenInstance->ErrorMessageToDisplay = FText::FromString("Failed To Create Session. User Not Logged In.");
-		ErrorScreenInstance->AddToViewport();
+		CreateErrorScreen("User Not Logged In. Please Login and Try Again.");
 	}
 }
 
@@ -271,9 +269,7 @@ void UEOSGameInstance::OnCreateSessionComplete(FName SessionName, bool bWasSucce
 {
 	if (!bWasSuccessful)
 	{
-		ErrorScreenInstance = CreateWidget<UErrorMenu>(GetWorld(), ErrorScreen);
-		ErrorScreenInstance->ErrorMessageToDisplay = FText::FromString("Failed To Create Session. Please Check Your Network Connection.");
-		ErrorScreenInstance->AddToViewport();
+		CreateErrorScreen("An Unknown Error Occured. Please Check Your Network Connection and Try Again.");
 		return;
 	}
 	
