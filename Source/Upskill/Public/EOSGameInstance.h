@@ -94,6 +94,8 @@ private:
 	void OnReadFriendsListComplete(int32 LocalUserNum, bool bWasSuccessful, const FString& ListName, const FString& Error);
 	void OnNetworkFailure(UWorld* World, UNetDriver* NetDriver, ENetworkFailure::Type FailureType, const FString& ErrorString);
 
+	void CreateErrorScreen(FString ErrorMessage);
+
 	TSharedPtr<class FOnlineSessionSearch> SessionSearch;
 	
 	TSubclassOf<class UUserWidget> MainMenu;
