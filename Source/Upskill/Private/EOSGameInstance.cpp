@@ -254,7 +254,7 @@ void UEOSGameInstance::CreateSession()
 			SessionSettings.bUseLobbiesIfAvailable = true;
 			SessionSettings.bIsDedicated = false;
 			SessionSettings.Set(SERVER_NAME_SETTINGS_KEY, DesiredServerName, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
-			SessionSettings.Set(SEARCH_KEYWORDS, FString("BarnyardLobby"), EOnlineDataAdvertisementType::ViaOnlineService);
+			SessionSettings.Set(SEARCH_KEYWORDS, FString("UpskillLobby"), EOnlineDataAdvertisementType::ViaOnlineService);
 		
 			SessionInterface->CreateSession(0, NAME_GameSession, SessionSettings);	
 		}
@@ -339,40 +339,52 @@ void UEOSGameInstance::FindSession()
 
 void UEOSGameInstance::OnFindSessionsComplete(bool bWasSuccessful)
 {
-	if (bWasSuccessful && SessionSearch.IsValid() && MainMenuWidget != nullptr)
+	if (bWasSuccessful)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Finished Session Find"));
-
-		TArray<FServerData> ServerNames;
-		for (const FOnlineSessionSearchResult& SearchResult : SessionSearch->SearchResults)
+		if (SessionSearch.IsValid())
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Found Session: %s"), *SearchResult.GetSessionIdStr());
-			FServerData Data;
-			Data.Name = *SearchResult.GetSessionIdStr();
-			Data.HostUsername = *SearchResult.Session.OwningUserName;
-			Data.MaxPlayers = SearchResult.Session.SessionSettings.NumPublicConnections;
-			Data.CurrentPlayers = Data.MaxPlayers - SearchResult.Session.NumOpenPublicConnections;
-			Data.Ping = SearchResult.PingInMs;
-			FString ServerName;
-			if (SearchResult.Session.SessionSettings.Get(SERVER_NAME_SETTINGS_KEY, ServerName))
+			if (MainMenuWidget != nullptr)
 			{
-				Data.Name = ServerName;
+				UE_LOG(LogTemp, Warning, TEXT("Finished Session Find"));
+
+				TArray<FServerData> ServerNames;
+				for (const FOnlineSessionSearchResult& SearchResult : SessionSearch->SearchResults)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("Found Session: %s"), *SearchResult.GetSessionIdStr());
+					FServerData Data;
+					Data.Name = *SearchResult.GetSessionIdStr();
+					Data.HostUsername = *SearchResult.Session.OwningUserName;
+					Data.MaxPlayers = SearchResult.Session.SessionSettings.NumPublicConnections;
+					Data.CurrentPlayers = Data.MaxPlayers - SearchResult.Session.NumOpenPublicConnections;
+					Data.Ping = SearchResult.PingInMs;
+					FString ServerName;
+					if (SearchResult.Session.SessionSettings.Get(SERVER_NAME_SETTINGS_KEY, ServerName))
+					{
+						Data.Name = ServerName;
+					}
+					else
+					{
+						Data.Name = "Name Unavailable";
+					}
+			
+					ServerNames.Add(Data);
+				}
+
+				MainMenuWidget->SetServerList(ServerNames);
 			}
 			else
 			{
-				Data.Name = "Name Unavailable";
+				CreateErrorScreen("MainMenuWidget Is nullptr - Please Try Again");
 			}
-			
-			ServerNames.Add(Data);
 		}
-
-		MainMenuWidget->SetServerList(ServerNames);
+		else
+		{
+			CreateErrorScreen("Session Search Was Not Valid - Please Try Again.");
+		}
 	}
 	else
 	{
-		ErrorScreenInstance = CreateWidget<UErrorMenu>(GetWorld(), ErrorScreen);
-		ErrorScreenInstance->ErrorMessageToDisplay = FText::FromString("Failed To Join Session. Please Check Your Network Connection.");
-		ErrorScreenInstance->AddToViewport();
+		CreateErrorScreen("Find Session Was Not Successful - Please Try Again.");
 	}
 }
 
@@ -442,6 +454,13 @@ void UEOSGameInstance::OnNetworkFailure(UWorld* World, UNetDriver* NetDriver, EN
 	const FString& ErrorString)
 {
 	LoadMainMenu();
+}
+
+void UEOSGameInstance::CreateErrorScreen(FString ErrorMessage)
+{
+	ErrorScreenInstance = CreateWidget<UErrorMenu>(GetWorld(), ErrorScreen);
+	ErrorScreenInstance->ErrorMessageToDisplay = FText::FromString(ErrorMessage);
+	ErrorScreenInstance->AddToViewport();
 }
 
 void UEOSGameInstance::ShowInviteUI()
