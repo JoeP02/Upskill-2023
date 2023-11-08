@@ -246,13 +246,14 @@ void UEOSGameInstance::CreateSession()
 				SessionSettings.bIsLANMatch = true;
 			}
 		
-			SessionSettings.NumPublicConnections = 5;
+			SessionSettings.NumPublicConnections = 4;
 			SessionSettings.bShouldAdvertise = true;
 			SessionSettings.bAllowJoinInProgress = true;
 			SessionSettings.bAllowJoinViaPresence = true;
 			SessionSettings.bUsesPresence = true;
 			SessionSettings.bUseLobbiesIfAvailable = true;
 			SessionSettings.bIsDedicated = false;
+			SessionSettings.bAllowInvites = true;
 			SessionSettings.Set(SERVER_NAME_SETTINGS_KEY, DesiredServerName, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 			SessionSettings.Set(SEARCH_KEYWORDS, FString("UpskillLobby"), EOnlineDataAdvertisementType::ViaOnlineService);
 		

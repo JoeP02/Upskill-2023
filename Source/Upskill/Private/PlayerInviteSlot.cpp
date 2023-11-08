@@ -3,6 +3,11 @@
 
 #include "PlayerInviteSlot.h"
 
+UPlayerInviteSlot::UPlayerInviteSlot()
+{
+	
+}
+
 bool UPlayerInviteSlot::Initialize()
 {
 	bool Success = Super::Initialize();
@@ -24,5 +29,14 @@ FText UPlayerInviteSlot::GetPlayerName()
 
 void UPlayerInviteSlot::OnInviteButtonPressed()
 {
+	SessionPtr = Cast<UEOSGameInstance>(GetGameInstance())->SessionInterface;
+
+	if (SessionPtr == nullptr)
+	{
+		Cast<UEOSGameInstance>(GetGameInstance())->CreateErrorScreen("Could Not Get Session Interface - Please Try Again.");
+	}
+	
 	UE_LOG(LogTemp, Warning, TEXT("Invite %s To Game"), *GetPlayerName().ToString());
+
+	SessionPtr->SendSessionInviteToFriend(0, NAME_GameSession, *FriendData->GetUserId());
 }

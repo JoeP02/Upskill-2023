@@ -87,9 +87,9 @@ public:
 	FString DesiredServerAddress;
 
 	IOnlineSubsystem* OnlineSubsystem;
+	IOnlineSessionPtr SessionInterface;
 
 protected:
-	IOnlineSessionPtr SessionInterface;
 
 	bool bIsLoggedIn;
 
