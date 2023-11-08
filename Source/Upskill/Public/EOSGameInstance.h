@@ -78,15 +78,24 @@ public:
 	
 	UPROPERTY(Replicated) int32 numberOfPlayers;
 	TSharedPtr<FOnlineSessionSearch> SearchSettings;
+
+	TArray<TSharedRef<FOnlineFriend>> AllFriends;
 	
 	UPROPERTY(EditAnywhere) bool bIsLAN = false;
 
 	FString DesiredServerName;
 	FString DesiredServerAddress;
 
-protected:
 	IOnlineSubsystem* OnlineSubsystem;
 	IOnlineSessionPtr SessionInterface;
+
+	FOnSessionInviteReceivedDelegate OnSessionInviteReceived;
+	FOnSessionUserInviteAcceptedDelegate OnSessionUserInviteAccepted;
+
+	FDelegateHandle OnSessionInviteReceivedHandle;
+	FDelegateHandle OnSessionUserInviteAcceptedHandle;
+
+protected:
 
 	bool bIsLoggedIn;
 
@@ -96,8 +105,11 @@ private:
 	void OnDestroySessionComplete(FName SessionName, bool bWasSuccessful);
 	void OnFindSessionsComplete(bool bWasSuccessful);
 	void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
-	void OnReadFriendsListComplete(int32 LocalUserNum, bool bWasSuccessful, const FString& ListName, const FString& Error);
+	void OnReadFriendsListComplete(int32 LocalUserNum, bool bWasSuccessful, const FString& ListName,
+	                               const FString& Error);
 	void OnNetworkFailure(UWorld* World, UNetDriver* NetDriver, ENetworkFailure::Type FailureType, const FString& ErrorString);
+	void SessionInviteReceived(const FUniqueNetId& UserId, const FUniqueNetId& FriendId, const FString& String, const FOnlineSessionSearchResult& SearchResult);
+	void SessionUserInviteAccepted(bool bWasSuccessful, int UserNum, TSharedPtr<const FUniqueNetId> FriendId, const FOnlineSessionSearchResult& SearchResult);
 
 	TSharedPtr<class FOnlineSessionSearch> SessionSearch;
 	

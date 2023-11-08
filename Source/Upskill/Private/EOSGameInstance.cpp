@@ -7,6 +7,8 @@
 #include "OnlineSubsystem.h"
 #include "Runtime/MoviePlayer/Public/MoviePlayer.h"
 #include "Blueprint/UserWidget.h"
+#include "Chaos/AABB.h"
+#include "Chaos/AABB.h"
 #include "Interfaces/OnlineExternalUIInterface.h"
 #include "Interfaces/OnlineFriendsInterface.h"
 #include "Interfaces/OnlineIdentityInterface.h"
@@ -25,6 +27,9 @@ UEOSGameInstance::UEOSGameInstance(const FObjectInitializer &ObjectInitializer)
 	MainMenu = MenuBPClass.Class;
 	
 	bIsLoggedIn = false;
+
+	OnSessionInviteReceived = FOnSessionInviteReceivedDelegate::CreateUObject(this, &UEOSGameInstance::SessionInviteReceived);
+	OnSessionUserInviteAccepted = FOnSessionUserInviteAcceptedDelegate::CreateUObject(this, &UEOSGameInstance::SessionUserInviteAccepted);
 }
 
 
@@ -44,6 +49,9 @@ void UEOSGameInstance::Init()
 		SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnDestroySessionComplete);
 		SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnFindSessionsComplete);
 		SessionInterface->OnJoinSessionCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnJoinSessionComplete);
+
+		OnSessionInviteReceivedHandle = SessionInterface->AddOnSessionInviteReceivedDelegate_Handle(OnSessionInviteReceived);
+		OnSessionUserInviteAcceptedHandle = SessionInterface->AddOnSessionUserInviteAcceptedDelegate_Handle(OnSessionUserInviteAccepted);
 	}
 
 	if (GEngine != nullptr)
@@ -246,13 +254,14 @@ void UEOSGameInstance::CreateSession()
 				SessionSettings.bIsLANMatch = true;
 			}
 		
-			SessionSettings.NumPublicConnections = 5;
+			SessionSettings.NumPublicConnections = 4;
 			SessionSettings.bShouldAdvertise = true;
 			SessionSettings.bAllowJoinInProgress = true;
 			SessionSettings.bAllowJoinViaPresence = true;
 			SessionSettings.bUsesPresence = true;
 			SessionSettings.bUseLobbiesIfAvailable = true;
 			SessionSettings.bIsDedicated = false;
+			SessionSettings.bAllowInvites = true;
 			SessionSettings.Set(SERVER_NAME_SETTINGS_KEY, DesiredServerName, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 			SessionSettings.Set(SEARCH_KEYWORDS, FString("UpskillLobby"), EOnlineDataAdvertisementType::ViaOnlineService);
 		
@@ -328,6 +337,8 @@ void UEOSGameInstance::FindSession()
 				
 				SessionPtr->OnFindSessionsCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnFindSessionsComplete);
 				SessionPtr->FindSessions(0, SearchSettings.ToSharedRef());
+
+				//SessionPtr->SendSessionInviteToFriend()
 			}
 		}
 	}
@@ -424,7 +435,7 @@ void UEOSGameInstance::GetAllFriends()
 }
 
 void UEOSGameInstance::OnReadFriendsListComplete(int32 LocalUserNum, bool bWasSuccessful, const FString& ListName,
-	const FString& Error)
+                                                 const FString& Error)
 {
 	if (bWasSuccessful)
 	{
@@ -435,11 +446,7 @@ void UEOSGameInstance::OnReadFriendsListComplete(int32 LocalUserNum, bool bWasSu
 				TArray<TSharedRef<FOnlineFriend>> FriendsList;
 				if (FriendsPtr->GetFriendsList(0, ListName, FriendsList))
 				{
-					for (TSharedRef<FOnlineFriend> Friend : FriendsList)
-					{
-						FString FriendName = Friend.Get().GetDisplayName();
-						UE_LOG(LogTemp, Warning, TEXT("Friend: %s"), *FriendName);
-					}
+					AllFriends = FriendsList;
 				}
 			}
 		}
@@ -450,6 +457,19 @@ void UEOSGameInstance::OnNetworkFailure(UWorld* World, UNetDriver* NetDriver, EN
 	const FString& ErrorString)
 {
 	LoadMainMenu();
+}
+
+void UEOSGameInstance::SessionInviteReceived(const FUniqueNetId& UserId, const FUniqueNetId& FriendId, const FString& String,
+	const FOnlineSessionSearchResult& SearchResult)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Invite Recieved"));
+}
+
+void UEOSGameInstance::SessionUserInviteAccepted(bool bWasSuccessful, int UserNum, TSharedPtr<const FUniqueNetId> FriendId, const FOnlineSessionSearchResult& SearchResult)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Invite Accepted"));
+
+	SessionInterface->JoinSession(0, NAME_GameSession, SearchResult);
 }
 
 void UEOSGameInstance::CreateErrorScreen(FString ErrorMessage)
