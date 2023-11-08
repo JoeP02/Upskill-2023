@@ -27,6 +27,9 @@ UEOSGameInstance::UEOSGameInstance(const FObjectInitializer &ObjectInitializer)
 	MainMenu = MenuBPClass.Class;
 	
 	bIsLoggedIn = false;
+
+	OnSessionInviteReceived = FOnSessionInviteReceivedDelegate::CreateUObject(this, &UEOSGameInstance::SessionInviteReceived);
+	OnSessionUserInviteAccepted = FOnSessionUserInviteAcceptedDelegate::CreateUObject(this, &UEOSGameInstance::SessionUserInviteAccepted);
 }
 
 
@@ -46,7 +49,9 @@ void UEOSGameInstance::Init()
 		SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnDestroySessionComplete);
 		SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnFindSessionsComplete);
 		SessionInterface->OnJoinSessionCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnJoinSessionComplete);
-		SessionInterface->OnSessionUserInviteAcceptedDelegates.AddUObject(this, &UEOSGameInstance::OnInviteAccepted);
+
+		OnSessionInviteReceivedHandle = SessionInterface->AddOnSessionInviteReceivedDelegate_Handle(OnSessionInviteReceived);
+		OnSessionUserInviteAcceptedHandle = SessionInterface->AddOnSessionUserInviteAcceptedDelegate_Handle(OnSessionUserInviteAccepted);
 	}
 
 	if (GEngine != nullptr)
@@ -454,16 +459,15 @@ void UEOSGameInstance::OnNetworkFailure(UWorld* World, UNetDriver* NetDriver, EN
 	LoadMainMenu();
 }
 
-void UEOSGameInstance::OnInviteRecieved(const FUniqueNetId& UserId, const FUniqueNetId& FromId, const FString& AppId,
-	const FOnlineSessionSearchResult& InviteResult)
+void UEOSGameInstance::SessionInviteReceived(const FUniqueNetId& UserId, const FUniqueNetId& FriendId, const FString& String,
+	const FOnlineSessionSearchResult& SearchResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Received Game Invite"));
+	UE_LOG(LogTemp, Warning, TEXT("Invite Recieved"));
 }
 
-void UEOSGameInstance::OnInviteAccepted(bool bWasSuccessful, int ControllerId, TSharedPtr<const FUniqueNetId> UserId,
-                                        const FOnlineSessionSearchResult& InviteResult)
+void UEOSGameInstance::SessionUserInviteAccepted(bool bWasSuccessful, int UserNum, TSharedPtr<const FUniqueNetId> FriendId, const FOnlineSessionSearchResult& SearchResult)
 {
-	JoinSession(0, InviteResult);
+	UE_LOG(LogTemp, Warning, TEXT("Invite Accepted"));
 }
 
 void UEOSGameInstance::CreateErrorScreen(FString ErrorMessage)

@@ -89,6 +89,12 @@ public:
 	IOnlineSubsystem* OnlineSubsystem;
 	IOnlineSessionPtr SessionInterface;
 
+	FOnSessionInviteReceivedDelegate OnSessionInviteReceived;
+	FOnSessionUserInviteAcceptedDelegate OnSessionUserInviteAccepted;
+
+	FDelegateHandle OnSessionInviteReceivedHandle;
+	FDelegateHandle OnSessionUserInviteAcceptedHandle;
+
 protected:
 
 	bool bIsLoggedIn;
@@ -102,8 +108,8 @@ private:
 	void OnReadFriendsListComplete(int32 LocalUserNum, bool bWasSuccessful, const FString& ListName,
 	                               const FString& Error);
 	void OnNetworkFailure(UWorld* World, UNetDriver* NetDriver, ENetworkFailure::Type FailureType, const FString& ErrorString);
-	void OnInviteRecieved(const FUniqueNetId& UserId, const FUniqueNetId& FromId, const FString& AppId, const FOnlineSessionSearchResult& InviteResult);
-	void OnInviteAccepted(bool bWasSuccessful, int ControllerId, TSharedPtr<const FUniqueNetId> UserId, const FOnlineSessionSearchResult& InviteResult);
+	void SessionInviteReceived(const FUniqueNetId& UserId, const FUniqueNetId& FriendId, const FString& String, const FOnlineSessionSearchResult& SearchResult);
+	void SessionUserInviteAccepted(bool bWasSuccessful, int UserNum, TSharedPtr<const FUniqueNetId> FriendId, const FOnlineSessionSearchResult& SearchResult);
 
 	TSharedPtr<class FOnlineSessionSearch> SessionSearch;
 	
