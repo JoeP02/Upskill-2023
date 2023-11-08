@@ -102,6 +102,8 @@ private:
 	void OnReadFriendsListComplete(int32 LocalUserNum, bool bWasSuccessful, const FString& ListName,
 	                               const FString& Error);
 	void OnNetworkFailure(UWorld* World, UNetDriver* NetDriver, ENetworkFailure::Type FailureType, const FString& ErrorString);
+	void OnInviteRecieved(const FUniqueNetId& UserId, const FUniqueNetId& FromId, const FString& AppId, const FOnlineSessionSearchResult& InviteResult);
+	void OnInviteAccepted();
 
 	TSharedPtr<class FOnlineSessionSearch> SessionSearch;
 	

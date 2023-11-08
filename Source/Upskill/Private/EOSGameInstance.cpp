@@ -44,6 +44,8 @@ void UEOSGameInstance::Init()
 		SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnDestroySessionComplete);
 		SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnFindSessionsComplete);
 		SessionInterface->OnJoinSessionCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnJoinSessionComplete);
+		SessionInterface->OnSessionInviteReceivedDelegates.AddUObject(this, &UEOSGameInstance::OnInviteRecieved);
+		// SessionInterface->OnSessionUserInviteAcceptedDelegates.AddUObject(this, &UEOSGameInstance::OnInviteAccepted);
 	}
 
 	if (GEngine != nullptr)
@@ -449,6 +451,16 @@ void UEOSGameInstance::OnNetworkFailure(UWorld* World, UNetDriver* NetDriver, EN
 	const FString& ErrorString)
 {
 	LoadMainMenu();
+}
+
+void UEOSGameInstance::OnInviteRecieved(const FUniqueNetId& UserId, const FUniqueNetId& FromId, const FString& AppId,
+	const FOnlineSessionSearchResult& InviteResult)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Received Game Invite"));
+}
+
+void UEOSGameInstance::OnInviteAccepted()
+{
 }
 
 void UEOSGameInstance::CreateErrorScreen(FString ErrorMessage)
