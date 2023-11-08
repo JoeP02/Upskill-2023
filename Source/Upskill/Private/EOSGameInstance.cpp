@@ -468,6 +468,8 @@ void UEOSGameInstance::SessionInviteReceived(const FUniqueNetId& UserId, const F
 void UEOSGameInstance::SessionUserInviteAccepted(bool bWasSuccessful, int UserNum, TSharedPtr<const FUniqueNetId> FriendId, const FOnlineSessionSearchResult& SearchResult)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Invite Accepted"));
+
+	SessionInterface->JoinSession(0, NAME_GameSession, SearchResult);
 }
 
 void UEOSGameInstance::CreateErrorScreen(FString ErrorMessage)
