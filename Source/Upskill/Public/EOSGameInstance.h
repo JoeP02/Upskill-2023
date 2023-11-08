@@ -103,7 +103,7 @@ private:
 	                               const FString& Error);
 	void OnNetworkFailure(UWorld* World, UNetDriver* NetDriver, ENetworkFailure::Type FailureType, const FString& ErrorString);
 	void OnInviteRecieved(const FUniqueNetId& UserId, const FUniqueNetId& FromId, const FString& AppId, const FOnlineSessionSearchResult& InviteResult);
-	void OnInviteAccepted();
+	void OnInviteAccepted(bool bWasSuccessful, int ControllerId, TSharedPtr<const FUniqueNetId> UserId, const FOnlineSessionSearchResult& InviteResult);
 
 	TSharedPtr<class FOnlineSessionSearch> SessionSearch;
 	

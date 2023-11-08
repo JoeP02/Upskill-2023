@@ -7,6 +7,8 @@
 #include "OnlineSubsystem.h"
 #include "Runtime/MoviePlayer/Public/MoviePlayer.h"
 #include "Blueprint/UserWidget.h"
+#include "Chaos/AABB.h"
+#include "Chaos/AABB.h"
 #include "Interfaces/OnlineExternalUIInterface.h"
 #include "Interfaces/OnlineFriendsInterface.h"
 #include "Interfaces/OnlineIdentityInterface.h"
@@ -45,7 +47,7 @@ void UEOSGameInstance::Init()
 		SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnFindSessionsComplete);
 		SessionInterface->OnJoinSessionCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnJoinSessionComplete);
 		SessionInterface->OnSessionInviteReceivedDelegates.AddUObject(this, &UEOSGameInstance::OnInviteRecieved);
-		// SessionInterface->OnSessionUserInviteAcceptedDelegates.AddUObject(this, &UEOSGameInstance::OnInviteAccepted);
+		SessionInterface->OnSessionUserInviteAcceptedDelegates.AddUObject(this, &UEOSGameInstance::OnInviteAccepted);
 	}
 
 	if (GEngine != nullptr)
@@ -459,8 +461,10 @@ void UEOSGameInstance::OnInviteRecieved(const FUniqueNetId& UserId, const FUniqu
 	UE_LOG(LogTemp, Warning, TEXT("Received Game Invite"));
 }
 
-void UEOSGameInstance::OnInviteAccepted()
+void UEOSGameInstance::OnInviteAccepted(bool bWasSuccessful, int ControllerId, TSharedPtr<const FUniqueNetId> UserId,
+                                        const FOnlineSessionSearchResult& InviteResult)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Accepted Game Invite"));
 }
 
 void UEOSGameInstance::CreateErrorScreen(FString ErrorMessage)
