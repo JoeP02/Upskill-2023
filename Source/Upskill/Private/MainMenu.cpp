@@ -2,6 +2,7 @@
 
 #include "MainMenu.h"
 
+#include "EOSGameInstance.h"
 #include "JoinGameScreen.h"
 #include "ServerRow.h"
 #include "Components/Button.h"
@@ -105,7 +106,11 @@ void UMainMenu::SetServerList(TArray<FServerData> ServerNames)
 	for (const FServerData& ServerData : ServerNames)
 	{
 		UServerRow* Row = CreateWidget<UServerRow>(World, ServerRowClass);
-		if (!ensure(Row != nullptr)) return;
+		if (Row == nullptr)
+		{
+			Cast<UEOSGameInstance>(GetGameInstance())->CreateErrorScreen("An Error Occured - Please Try Again.");
+			return;
+		}
 
 		Row->txt_ServerName->SetText(FText::FromString(ServerData.Name));
 		Row->txt_ServerHost->SetText(FText::FromString(ServerData.HostUsername));

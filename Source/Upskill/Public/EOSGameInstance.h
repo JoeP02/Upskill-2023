@@ -48,6 +48,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) FSlateBrush BackgroundImage;
 
 	/*
+	 **** Error Screen ****
+	 */
+	void CreateErrorScreen(FString ErrorMessage);
+
+	/*
 	 **** Online ****
 	 */
 	UFUNCTION(Exec) void Host(FString ServerName, FString ServerAddress) override;
@@ -93,8 +98,6 @@ private:
 	void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
 	void OnReadFriendsListComplete(int32 LocalUserNum, bool bWasSuccessful, const FString& ListName, const FString& Error);
 	void OnNetworkFailure(UWorld* World, UNetDriver* NetDriver, ENetworkFailure::Type FailureType, const FString& ErrorString);
-
-	void CreateErrorScreen(FString ErrorMessage);
 
 	TSharedPtr<class FOnlineSessionSearch> SessionSearch;
 	
