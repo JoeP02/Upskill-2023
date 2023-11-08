@@ -328,6 +328,8 @@ void UEOSGameInstance::FindSession()
 				
 				SessionPtr->OnFindSessionsCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnFindSessionsComplete);
 				SessionPtr->FindSessions(0, SearchSettings.ToSharedRef());
+
+				//SessionPtr->SendSessionInviteToFriend()
 			}
 		}
 	}
@@ -424,7 +426,7 @@ void UEOSGameInstance::GetAllFriends()
 }
 
 void UEOSGameInstance::OnReadFriendsListComplete(int32 LocalUserNum, bool bWasSuccessful, const FString& ListName,
-	const FString& Error)
+                                                 const FString& Error)
 {
 	if (bWasSuccessful)
 	{
@@ -435,11 +437,7 @@ void UEOSGameInstance::OnReadFriendsListComplete(int32 LocalUserNum, bool bWasSu
 				TArray<TSharedRef<FOnlineFriend>> FriendsList;
 				if (FriendsPtr->GetFriendsList(0, ListName, FriendsList))
 				{
-					for (TSharedRef<FOnlineFriend> Friend : FriendsList)
-					{
-						FString FriendName = Friend.Get().GetDisplayName();
-						UE_LOG(LogTemp, Warning, TEXT("Friend: %s"), *FriendName);
-					}
+					AllFriends = FriendsList;
 				}
 			}
 		}

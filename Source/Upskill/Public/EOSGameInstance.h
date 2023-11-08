@@ -78,14 +78,17 @@ public:
 	
 	UPROPERTY(Replicated) int32 numberOfPlayers;
 	TSharedPtr<FOnlineSessionSearch> SearchSettings;
+
+	TArray<TSharedRef<FOnlineFriend>> AllFriends;
 	
 	UPROPERTY(EditAnywhere) bool bIsLAN = false;
 
 	FString DesiredServerName;
 	FString DesiredServerAddress;
 
-protected:
 	IOnlineSubsystem* OnlineSubsystem;
+
+protected:
 	IOnlineSessionPtr SessionInterface;
 
 	bool bIsLoggedIn;
@@ -96,7 +99,8 @@ private:
 	void OnDestroySessionComplete(FName SessionName, bool bWasSuccessful);
 	void OnFindSessionsComplete(bool bWasSuccessful);
 	void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
-	void OnReadFriendsListComplete(int32 LocalUserNum, bool bWasSuccessful, const FString& ListName, const FString& Error);
+	void OnReadFriendsListComplete(int32 LocalUserNum, bool bWasSuccessful, const FString& ListName,
+	                               const FString& Error);
 	void OnNetworkFailure(UWorld* World, UNetDriver* NetDriver, ENetworkFailure::Type FailureType, const FString& ErrorString);
 
 	TSharedPtr<class FOnlineSessionSearch> SessionSearch;
