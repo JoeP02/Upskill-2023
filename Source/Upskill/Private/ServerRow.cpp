@@ -3,6 +3,17 @@
 
 #include "ServerRow.h"
 
-void UServerRow::Setup(UMainMenu* Parent, uint32 indexIndex)
+#include "MainMenu.h"
+#include "Components/Button.h"
+
+void UServerRow::Setup(UMainMenu* InParent, uint32 InIndex)
 {
+	Parent = InParent;
+	Index = InIndex;
+	SelectButton->OnClicked.AddDynamic(this, &UServerRow::OnClicked);
+}
+
+void UServerRow::OnClicked()
+{
+	Parent->SelectIndex(Index);
 }
