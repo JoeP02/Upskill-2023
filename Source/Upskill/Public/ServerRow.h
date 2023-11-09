@@ -27,5 +27,17 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 		bool Selected = false;
 
-	void Setup(class UMainMenu* Parent, uint32 indexIndex);
+	void Setup(class UMainMenu* InParent, uint32 InIndex);
+
+private:
+	UPROPERTY(Meta = (BindWidget))
+	class UButton* SelectButton;
+
+	UPROPERTY()
+	class UMainMenu* Parent;
+
+	uint32 Index;
+
+	UFUNCTION()
+	void OnClicked();
 };
