@@ -53,7 +53,7 @@ void UInviteWidget::GetAllFriends()
 	{
 		if (IOnlineFriendsPtr FriendsPtr = OnlineSubsystem->GetFriendsInterface())
 		{
-			FriendsPtr->ReadFriendsList(0, FString(""), FOnReadFriendsListComplete::CreateUObject(this, &UInviteWidget::OnReadFriendsListComplete));
+			FriendsPtr->ReadFriendsList(0, ToString(EFriendsLists::Default), FOnReadFriendsListComplete::CreateUObject(this, &UInviteWidget::OnReadFriendsListComplete));
 		}
 	}
 }
@@ -73,6 +73,11 @@ void UInviteWidget::OnReadFriendsListComplete(int32 LocalUserNum, bool bWasSucce
 				if (FriendsPtr->GetFriendsList(0, ListName, FriendsList))
 				{
 					PlayerFriends = FriendsList;
+
+					for (auto OnlineFriend : FriendsList)
+					{
+						UE_LOG(LogTemp, Warning, TEXT("Friend: %s"), *OnlineFriend->GetDisplayName());
+					}
 					
 					RefreshFriendList();
 				}

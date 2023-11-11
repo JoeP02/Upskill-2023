@@ -7,7 +7,7 @@ USTRUCT(BlueprintType) struct FPlayerInfo
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintReadOnly) FText PlayerName;
-	UPROPERTY(BlueprintReadOnly) bool bIsReady;
-	UPROPERTY(BlueprintReadOnly) APawn* Character;
+	UPROPERTY(BlueprintReadOnly) FText PlayerName = FText::FromString("Unknown Name");
+	UPROPERTY(BlueprintReadOnly) bool bIsReady = false;
+	UPROPERTY(BlueprintReadOnly) APawn* Character = nullptr;
 };

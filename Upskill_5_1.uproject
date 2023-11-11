@@ -85,6 +85,10 @@
 			"Name": "LadyBugTracker",
 			"Enabled": true,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/3ba38000be0c43ecb13afaf117191b30"
+		},
+		{
+			"Name": "CodeView",
+			"Enabled": true
 		}
 	]
 }

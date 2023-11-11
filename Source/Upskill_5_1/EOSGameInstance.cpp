@@ -430,7 +430,7 @@ void UEOSGameInstance::GetAllFriends()
 		{
 			if (IOnlineFriendsPtr FriendsPtr = OnlineSubsystem->GetFriendsInterface())
 			{
-				FriendsPtr->ReadFriendsList(0, FString(""), FOnReadFriendsListComplete::CreateUObject(this, &UEOSGameInstance::OnReadFriendsListComplete));
+				FriendsPtr->ReadFriendsList(0, ToString(EFriendsLists::Default), FOnReadFriendsListComplete::CreateUObject(this, &UEOSGameInstance::OnReadFriendsListComplete));
 			}
 		}
 	}

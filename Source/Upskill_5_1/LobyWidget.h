@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "MenuWidget.h"
+#include "PlayerCardMenu.h"
 #include "PlayerInfo.h"
+#include "Components/CanvasPanel.h"
 #include "LobyWidget.generated.h"
 
 /**
@@ -21,9 +23,17 @@ public:
 	
 	virtual void NativeConstruct() override;
 	virtual void UpdatePlayerList(TArray<FPlayerInfo> PlayerInfo);
+	
+	void HidePlayerCardMenu();
+
+	UFUNCTION() void OnPlayerCardClicked(FPlayerInfo PlayerInfo);
 
 	TSubclassOf<UUserWidget> PlayerSlotClass;
+	TSubclassOf<UUserWidget> PlayerCardMenuHostClass;
+	TSubclassOf<UUserWidget> PlayerCardMenuClientClass;
 
+	UPROPERTY(Meta = (BindWidget)) UCanvasPanel* MenuCanvas;
 	UPROPERTY(Meta = (BindWidget)) UPanelWidget* PlayerList;
+	UPROPERTY(EditAnywhere) UPlayerCardMenu* PlayerCardMenu;
 };
 
