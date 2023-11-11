@@ -6,6 +6,7 @@
 #include "EOSGameInstance.h"
 #include "PlayerInviteSlot.h"
 #include "Interfaces/OnlineFriendsInterface.h"
+#include "Interfaces/OnlinePresenceInterface.h"
 
 
 UInviteWidget::UInviteWidget()
@@ -29,7 +30,16 @@ void UInviteWidget::RefreshFriendList()
 
 		Row->FriendData = Friend;
 
-		FriendList->AddChild(Row);
+		if (Friend->GetPresence().bIsOnline)
+		{
+			OnlineFriendList->AddChild(Row);
+		}
+		else
+		{
+			OfflineFriendList->AddChild(Row);
+		}
+
+		
 
 		UE_LOG(LogTemp, Warning, TEXT("Adding Friend With Name: %s"), *Friend->GetDisplayName());
 	}
