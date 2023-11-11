@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS(Config=EditorPerProjectUserSettings, defaultconfig, meta = (DisplayName="Developer Account Login Settings"))
+UCLASS(Config=EditorPerProjectUserSettings, meta = (DisplayName="Developer Account Login Settings"))
 class UPSKILL_5_1_API UDeveloperLoginCredentials : public UDeveloperSettings
 {
 	GENERATED_BODY()
