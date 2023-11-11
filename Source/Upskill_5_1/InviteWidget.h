@@ -25,7 +25,8 @@ public:
 
 	TSubclassOf<UUserWidget> InviteSlotClass;
 
-	UPROPERTY(Meta = (BindWidget)) class UPanelWidget* FriendList;
+	UPROPERTY(Meta = (BindWidget)) class UPanelWidget* OnlineFriendList;
+	UPROPERTY(Meta = (BindWidget)) class UPanelWidget* OfflineFriendList;
 
 	UFUNCTION(BlueprintCallable) void RefreshFriendList();
 	UFUNCTION(BlueprintCallable) void GetAllFriends();
