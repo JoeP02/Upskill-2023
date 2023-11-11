@@ -3,6 +3,7 @@
 
 #include "EOSGameInstance.h"
 
+#include "DeveloperLoginCredentials.h"
 #include "MainMenu.h"
 #include "OnlineSubsystem.h"
 #include "Runtime/MoviePlayer/Public/MoviePlayer.h"
@@ -201,9 +202,10 @@ void UEOSGameInstance::Login()
 			
 			if (LoginType == ELoginType::VE_Developer)
 			{
+				const UDeveloperLoginCredentials* LoginCredentials = GetDefault<UDeveloperLoginCredentials>();
 				Credentials.Type = FString("developer");
-				Credentials.Id = FString("localhost:8081");
-				Credentials.Token = FString("JosephPeirson");
+				Credentials.Id = LoginCredentials->IPAddress + ":" + LoginCredentials->Port;
+				Credentials.Token = LoginCredentials->Token;
 			}
 			else if (LoginType == ELoginType::VE_AccountPortal)
 			{
