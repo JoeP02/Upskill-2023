@@ -7,7 +7,10 @@
 		{
 			"Name": "Upskill_5_1",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"DeveloperSettings"
+			]
 		}
 	],
 	"Plugins": [
