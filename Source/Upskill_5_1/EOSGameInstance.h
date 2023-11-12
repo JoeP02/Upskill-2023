@@ -85,7 +85,7 @@ public:
 	
 	UPROPERTY(EditAnywhere) bool bIsLAN = false;
 
-	FString DesiredServerName;
+	FString DesiredServerName = "Server Of Testing";
 	FString DesiredServerAddress;
 
 	IOnlineSubsystem* OnlineSubsystem;

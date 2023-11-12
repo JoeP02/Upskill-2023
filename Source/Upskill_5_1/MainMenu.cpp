@@ -112,6 +112,8 @@ void UMainMenu::SetServerList(TArray<FServerData> ServerNames)
 			return;
 		}
 
+		UE_LOG(LogTemp, Warning, TEXT("Session Data Received - Name: %s, Host Username: %s, Ping: %i"), *ServerData.Name, *ServerData.HostUsername, ServerData.Ping);
+
 		Row->txt_ServerName->SetText(FText::FromString(ServerData.Name));
 		Row->txt_ServerHost->SetText(FText::FromString(ServerData.HostUsername));
 		Row->txt_PlayerCount->SetText(FText::FromString(FString::Printf(TEXT("%d/%d"), ServerData.CurrentPlayers, ServerData.MaxPlayers)));

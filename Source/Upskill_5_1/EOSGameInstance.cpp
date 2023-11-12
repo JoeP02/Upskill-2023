@@ -371,7 +371,7 @@ void UEOSGameInstance::OnFindSessionsComplete(bool bWasSuccessful)
 					UE_LOG(LogTemp, Warning, TEXT("Found Session: %s"), *SearchResult.GetSessionIdStr());
 					FServerData Data;
 					Data.Name = *SearchResult.GetSessionIdStr();
-					Data.HostUsername = *SearchResult.Session.OwningUserName;
+					Data.HostUsername = SearchResult.Session.OwningUserName;
 					Data.MaxPlayers = SearchResult.Session.SessionSettings.NumPublicConnections;
 					Data.CurrentPlayers = Data.MaxPlayers - SearchResult.Session.NumOpenPublicConnections;
 					Data.Ping = SearchResult.PingInMs;
@@ -384,6 +384,8 @@ void UEOSGameInstance::OnFindSessionsComplete(bool bWasSuccessful)
 					{
 						Data.Name = "Name Unavailable";
 					}
+
+					UE_LOG(LogTemp, Warning, TEXT("Session Data Sent - Name: %s, Host Username: %s, Ping: %i"), *Data.Name, *Data.HostUsername, Data.Ping);
 			
 					ServerNames.Add(Data);
 				}
