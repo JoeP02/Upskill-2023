@@ -44,6 +44,8 @@ void UEOSGameInstance::Init()
 
 	OnlineSubsystem = IOnlineSubsystem::Get();
 	SessionInterface = OnlineSubsystem->GetSessionInterface();
+	OnlineUserInterface = OnlineSubsystem->GetUserInterface();
+	
 	if (SessionInterface.IsValid())
 	{
 		SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnCreateSessionComplete);
@@ -174,6 +176,11 @@ void UEOSGameInstance::LoadMainMenu()
 	PlayerController->ClientTravel("/Game/MenuSystem/Maps/MainMenu", ETravelType::TRAVEL_Absolute);
 }
 
+FText UEOSGameInstance::GetPlayerUsername()
+{
+	return PlayerUsername;
+}
+
 AActor* UEOSGameInstance::GetDefaultActorObject(TSubclassOf<AActor> Actor)
 {
 	return Actor.GetDefaultObject();
@@ -230,6 +237,8 @@ void UEOSGameInstance::OnLoginComplete(int32 LocalUserNum, bool bWasSuccessful, 
 	{
 		if (IOnlineIdentityPtr Identity = OnlineSubsystem->GetIdentityInterface())
 		{
+			PlayerUsername = FText::FromString(Identity->GetPlayerNickname(0));
+			
 			Identity->ClearOnLoginCompleteDelegates(0, this);
 		}
 	}

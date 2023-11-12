@@ -3,6 +3,7 @@
 
 #include "PlayerControllerLobby.h"
 
+#include "EOSGameInstance.h"
 #include "GameModeLobby.h"
 
 void APlayerControllerLobby::UpdatePlayerList_Implementation(const TArray<FPlayerInfo> &InPlayerInfo)
@@ -15,6 +16,7 @@ void APlayerControllerLobby::UpdatePlayerList_Implementation(const TArray<FPlaye
 void APlayerControllerLobby::OnPossess(APawn* InPawn)
 {
 	PlayerInfo.Character = InPawn;
+	PlayerInfo.PlayerName = Cast<UEOSGameInstance>(GetGameInstance())->GetPlayerUsername();
 
 	AGameModeLobby* GameModeLobby = Cast<AGameModeLobby>(GetWorld()->GetAuthGameMode());
 

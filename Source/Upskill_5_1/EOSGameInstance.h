@@ -60,6 +60,8 @@ public:
 	UFUNCTION(Exec) void RefreshServerList() override;
 	UFUNCTION(Exec) virtual void LoadMainMenu() override;
 
+	UFUNCTION(Exec) FText GetPlayerUsername();
+
 	UFUNCTION(BlueprintCallable) void LoadMenuWidget();
 	void StartSession();
 	
@@ -88,6 +90,7 @@ public:
 
 	IOnlineSubsystem* OnlineSubsystem;
 	IOnlineSessionPtr SessionInterface;
+	IOnlineUserPtr OnlineUserInterface;
 
 	FOnSessionInviteReceivedDelegate OnSessionInviteReceived;
 	FOnSessionUserInviteAcceptedDelegate OnSessionUserInviteAccepted;
@@ -115,4 +118,6 @@ private:
 	
 	TSubclassOf<class UUserWidget> MainMenu;
 	class UMainMenu* MainMenuWidget;
+
+	FText PlayerUsername;
 };
