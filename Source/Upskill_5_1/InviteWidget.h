@@ -33,6 +33,9 @@ public:
 	UPROPERTY(Meta = (BindWidget)) class UPanelWidget* OnlineFriendList;
 	UPROPERTY(Meta = (BindWidget)) class UPanelWidget* OfflineFriendList;
 
+	UPROPERTY(Meta = (BindWidget)) class UTextBlock* OnlineNumberText;
+	UPROPERTY(Meta = (BindWidget)) class UTextBlock* OfflineNumberText;
+
 	UFUNCTION(BlueprintCallable) void RefreshFriendList();
 	UFUNCTION(BlueprintCallable) void GetAllFriends();
 	void OnReadFriendsListComplete(int32 LocalUserNum, bool bWasSuccessful, const FString& ListName,
