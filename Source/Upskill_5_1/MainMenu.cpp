@@ -24,11 +24,6 @@ bool UMainMenu::Initialize()
 	bool Success = Super::Initialize();
 	if (!Success) return false;
 
-	Maps.Add(TEXT("Map 1"), TEXT("Map-1"));
-	Maps.Add(TEXT("Map 2"), TEXT("Map-2"));
-
-	GameModes.Add(TEXT("Kill Em All"), TEXT("KEA"));
-
 	if (!ensure(btn_Login != nullptr)) return false;
 	btn_Login->OnClicked.AddDynamic(this, &UMainMenu::Login);
 
@@ -38,33 +33,14 @@ bool UMainMenu::Initialize()
 	if (!ensure(btn_JoinGame != nullptr)) return false;
 	btn_JoinGame->OnClicked.AddDynamic(this, &UMainMenu::OpenJoinMenu);
 
-	/*
-	if (!ensure(BackButton_SingleSetup != nullptr)) return false;
-	BackButton_SingleSetup->OnClicked.AddDynamic(this, &UMainMenu::OpenOptionsMenu);
-
-	if (!ensure(BackButton_Join != nullptr)) return false;
-	BackButton_Join->OnClicked.AddDynamic(this, &UMainMenu::OpenOptionsMenu);
-
-	if (!ensure(BackButton_Host != nullptr)) return false;
-	BackButton_Host->OnClicked.AddDynamic(this, &UMainMenu::OpenOptionsMenu);
-
-	if (!ensure(JoinGameButton != nullptr)) return false;
-	JoinGameButton->OnClicked.AddDynamic(this, &UMainMenu::JoinServer);
-
-	if (!ensure(HostGameButton != nullptr)) return false;
-	HostGameButton->OnClicked.AddDynamic(this, &UMainMenu::HostServer);
-	*/
-
 	if (!ensure(btn_Quit != nullptr)) return false;
 	btn_Quit->OnClicked.AddDynamic(this, &UMainMenu::QuitPressed);
-
-	/*
-	if (!ensure(SinglePlayGameButton != nullptr)) return false;
-	SinglePlayGameButton->OnClicked.AddDynamic(this, &UMainMenu::StartSinglePlay);
-	*/
 	
 	JoinGameButton = WBP_JoinGameScreen->btn_JoinSelectedGame;
 	JoinGameButton->OnClicked.AddDynamic(this, &UMainMenu::JoinServer);
+
+	HostGameButton = WBP_HostGameScreen->btn_HostGame;
+	HostGameButton->OnClicked.AddDynamic(this, &UMainMenu::HostServer);
 
 	return true;
 }
@@ -81,11 +57,8 @@ void UMainMenu::HostServer()
 {
 	if (MenuInterface != nullptr)
 	{
-		// FString* Map = Maps.Find("null");
-		// FString* GameMode = GameModes.Find("null");
-
 		FString ServerName = "Session Name";
-		MenuInterface->Host(ServerName, "/Game/Levels/Barnyard?Listen");
+		MenuInterface->Host(ServerName, "NOTUSED");
 	}
 	else
 	{
@@ -173,8 +146,6 @@ void UMainMenu::OpenHostMenu()
 	if (!ensure(ContextMenu != nullptr)) return;
 	if (!ensure(WBP_HostGameScreen != nullptr)) return;
 	ContextMenu->SetActiveWidget(WBP_HostGameScreen);
-
-	HostServer();
 }
 
 void UMainMenu::QuitPressed()
