@@ -33,10 +33,12 @@ void UInviteWidget::RefreshFriendList()
 		if (Friend->GetPresence().bIsOnline)
 		{
 			OnlineFriendList->AddChild(Row);
+			OnlineExpandArea->SetIsExpanded(true);
 		}
 		else
 		{
 			OfflineFriendList->AddChild(Row);
+			OfflineExpandArea->SetIsExpanded(true);
 		}
 
 		
