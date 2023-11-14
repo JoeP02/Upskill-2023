@@ -6,6 +6,7 @@
 #include "MenuInterface.h"
 #include "MenuWidget.h"
 #include "Blueprint/UserWidget.h"
+#include "HostGameScreen.h"
 #include "MainMenu.generated.h"
 
 USTRUCT()
@@ -48,32 +49,22 @@ private:
 	UPROPERTY(Meta = (BindWidget))
 		class UButton* btn_JoinGame;
 
-	UButton* JoinGameButton;
+	class UButton* JoinGameButton;
 
 	class UButton* HostGameButton;
 
 	UPROPERTY(Meta = (BindWidget))
 		class UButton* btn_Quit;
-
-	// UJoinGameScreen* JoinGameScreen;
 	
 	UPROPERTY(Meta = (BindWidget))
 		class UJoinGameScreen* WBP_JoinGameScreen;
 
 	UPROPERTY(Meta = (BindWidget))
-		class UHostGameScreen* WBP_HostGameScreen;
+		UHostGameScreen* WBP_HostGameScreen;
 
 	/*
 	UPROPERTY(Meta = (BindWidget))
 	class UEditableTextBox* SessionNameTextBox;
-	*/
-
-	/*
-	UPROPERTY(Meta = (BindWidget))
-	class UComboBoxString* HostMapCombo;
-
-	UPROPERTY(Meta = (BindWidget))
-	class UComboBoxString* HostGameModeCombo;
 	*/
 
 	TSubclassOf<UUserWidget> ServerRowClass;

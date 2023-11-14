@@ -39,7 +39,7 @@ bool UMainMenu::Initialize()
 	JoinGameButton = WBP_JoinGameScreen->btn_JoinSelectedGame;
 	JoinGameButton->OnClicked.AddDynamic(this, &UMainMenu::JoinServer);
 
-	HostGameButton = WBP_HostGameScreen->btn_HostGameButton;
+	HostGameButton = WBP_HostGameScreen->btn_HostGame;
 	HostGameButton->OnClicked.AddDynamic(this, &UMainMenu::HostServer);
 
 	return true;
@@ -146,8 +146,6 @@ void UMainMenu::OpenHostMenu()
 	if (!ensure(ContextMenu != nullptr)) return;
 	if (!ensure(WBP_HostGameScreen != nullptr)) return;
 	ContextMenu->SetActiveWidget(WBP_HostGameScreen);
-
-	HostServer();
 }
 
 void UMainMenu::QuitPressed()

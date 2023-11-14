@@ -2,11 +2,3 @@
 
 
 #include "HostGameScreen.h"
-
-bool UHostGameScreen::Initialize()
-{
-	bool Success = Super::Initialize();
-	if (!Success) return false;
-
-	return true;
-}
