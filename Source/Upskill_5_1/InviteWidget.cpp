@@ -24,6 +24,9 @@ bool UInviteWidget::Initialize()
 
 void UInviteWidget::RefreshFriendList()
 {
+	int32 TempOnline = 0;
+	int32 TempOffline = 0;
+
 	for (TSharedRef<FOnlineFriend> Friend : PlayerFriends)
 	{
 		UPlayerInviteSlot* Row = CreateWidget<UPlayerInviteSlot>(GetWorld(), InviteSlotClass);
@@ -34,17 +37,22 @@ void UInviteWidget::RefreshFriendList()
 		{
 			OnlineFriendList->AddChild(Row);
 			OnlineExpandArea->SetIsExpanded(true);
+			TempOnline++;
 		}
 		else
 		{
 			OfflineFriendList->AddChild(Row);
 			OfflineExpandArea->SetIsExpanded(true);
+			TempOffline++;
 		}
 
 		
 
 		UE_LOG(LogTemp, Warning, TEXT("Adding Friend With Name: %s"), *Friend->GetDisplayName());
 	}
+
+	OnlineNumberText->SetText(FText::AsNumber(TempOnline));
+	OfflineNumberText->SetText(FText::AsNumber(TempOffline));
 }
 
 void UInviteWidget::GetAllFriends()
