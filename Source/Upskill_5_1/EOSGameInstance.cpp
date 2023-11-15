@@ -44,6 +44,8 @@ void UEOSGameInstance::Init()
 
 	OnlineSubsystem = IOnlineSubsystem::Get();
 	SessionInterface = OnlineSubsystem->GetSessionInterface();
+	OnlineUserInterface = OnlineSubsystem->GetUserInterface();
+	
 	if (SessionInterface.IsValid())
 	{
 		SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnCreateSessionComplete);
@@ -105,7 +107,6 @@ void UEOSGameInstance::Host(FString ServerName, FString ServerAddress)
 	UE_LOG(LogTemp, Warning, TEXT("Host Called Game Instance"));
 	
 	DesiredServerName = ServerName;
-	DesiredServerAddress = ServerAddress;
 	
 	if (SessionInterface.IsValid())
 	{
@@ -174,6 +175,11 @@ void UEOSGameInstance::LoadMainMenu()
 	PlayerController->ClientTravel("/Game/MenuSystem/Maps/MainMenu", ETravelType::TRAVEL_Absolute);
 }
 
+FText UEOSGameInstance::GetPlayerUsername()
+{
+	return PlayerUsername;
+}
+
 AActor* UEOSGameInstance::GetDefaultActorObject(TSubclassOf<AActor> Actor)
 {
 	return Actor.GetDefaultObject();
@@ -230,6 +236,8 @@ void UEOSGameInstance::OnLoginComplete(int32 LocalUserNum, bool bWasSuccessful, 
 	{
 		if (IOnlineIdentityPtr Identity = OnlineSubsystem->GetIdentityInterface())
 		{
+			PlayerUsername = FText::FromString(Identity->GetPlayerNickname(0));
+			
 			Identity->ClearOnLoginCompleteDelegates(0, this);
 		}
 	}
@@ -364,7 +372,7 @@ void UEOSGameInstance::OnFindSessionsComplete(bool bWasSuccessful)
 					UE_LOG(LogTemp, Warning, TEXT("Found Session: %s"), *SearchResult.GetSessionIdStr());
 					FServerData Data;
 					Data.Name = *SearchResult.GetSessionIdStr();
-					Data.HostUsername = *SearchResult.Session.OwningUserName;
+					Data.HostUsername = SearchResult.Session.OwningUserName;
 					Data.MaxPlayers = SearchResult.Session.SessionSettings.NumPublicConnections;
 					Data.CurrentPlayers = Data.MaxPlayers - SearchResult.Session.NumOpenPublicConnections;
 					Data.Ping = SearchResult.PingInMs;
@@ -377,6 +385,8 @@ void UEOSGameInstance::OnFindSessionsComplete(bool bWasSuccessful)
 					{
 						Data.Name = "Name Unavailable";
 					}
+
+					UE_LOG(LogTemp, Warning, TEXT("Session Data Sent - Name: %s, Host Username: %s, Ping: %i"), *Data.Name, *Data.HostUsername, Data.Ping);
 			
 					ServerNames.Add(Data);
 				}
@@ -432,7 +442,7 @@ void UEOSGameInstance::GetAllFriends()
 		{
 			if (IOnlineFriendsPtr FriendsPtr = OnlineSubsystem->GetFriendsInterface())
 			{
-				FriendsPtr->ReadFriendsList(0, FString(""), FOnReadFriendsListComplete::CreateUObject(this, &UEOSGameInstance::OnReadFriendsListComplete));
+				FriendsPtr->ReadFriendsList(0, ToString(EFriendsLists::Default), FOnReadFriendsListComplete::CreateUObject(this, &UEOSGameInstance::OnReadFriendsListComplete));
 			}
 		}
 	}

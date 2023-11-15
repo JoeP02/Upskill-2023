@@ -57,8 +57,11 @@ void UMainMenu::HostServer()
 {
 	if (MenuInterface != nullptr)
 	{
-		FString ServerName = "Session Name";
-		MenuInterface->Host(ServerName, "NOTUSED");
+		// FString* Map = Maps.Find("null");
+		// FString* GameMode = GameModes.Find("null");
+
+		FString ServerName = "Session Name Test";
+		MenuInterface->Host(ServerName, FString());
 	}
 	else
 	{
@@ -84,6 +87,8 @@ void UMainMenu::SetServerList(TArray<FServerData> ServerNames)
 			Cast<UEOSGameInstance>(GetGameInstance())->CreateErrorScreen("An Error Occured - Please Try Again.");
 			return;
 		}
+
+		UE_LOG(LogTemp, Warning, TEXT("Session Data Received - Name: %s, Host Username: %s, Ping: %i"), *ServerData.Name, *ServerData.HostUsername, ServerData.Ping);
 
 		Row->txt_ServerName->SetText(FText::FromString(ServerData.Name));
 		Row->txt_ServerHost->SetText(FText::FromString(ServerData.HostUsername));

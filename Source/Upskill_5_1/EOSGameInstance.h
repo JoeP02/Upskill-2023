@@ -60,6 +60,8 @@ public:
 	UFUNCTION(Exec) void RefreshServerList() override;
 	UFUNCTION(Exec) virtual void LoadMainMenu() override;
 
+	UFUNCTION(Exec) FText GetPlayerUsername();
+
 	UFUNCTION(BlueprintCallable) void LoadMenuWidget();
 	void StartSession();
 	
@@ -83,11 +85,12 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool bIsLAN = false;
 
-	FString DesiredServerName;
+	FString DesiredServerName = "Server Of Testing";
 	FString DesiredServerAddress;
 
 	IOnlineSubsystem* OnlineSubsystem;
 	IOnlineSessionPtr SessionInterface;
+	IOnlineUserPtr OnlineUserInterface;
 
 	FOnSessionInviteReceivedDelegate OnSessionInviteReceived;
 	FOnSessionUserInviteAcceptedDelegate OnSessionUserInviteAccepted;
@@ -115,4 +118,6 @@ private:
 	
 	TSubclassOf<class UUserWidget> MainMenu;
 	class UMainMenu* MainMenuWidget;
+
+	FText PlayerUsername;
 };
