@@ -36,6 +36,8 @@ public:
 protected:
 	virtual bool Initialize() override;
 
+	virtual void NativeConstruct() override;
+
 	UPROPERTY(BlueprintReadWrite, Meta = (BindWidget))
 		class UWidgetSwitcher* ContextMenu;
 

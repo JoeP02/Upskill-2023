@@ -24,16 +24,23 @@ bool UMainMenu::Initialize()
 	bool Success = Super::Initialize();
 	if (!Success) return false;
 
-	if (!ensure(btn_Login != nullptr)) return false;
+	return true;
+}
+
+void UMainMenu::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+	if (!ensure(btn_Login != nullptr)) return;
 	btn_Login->OnClicked.AddDynamic(this, &UMainMenu::Login);
 
-	if (!ensure(btn_HostGame != nullptr)) return false;
+	if (!ensure(btn_HostGame != nullptr)) return;
 	btn_HostGame->OnClicked.AddDynamic(this, &UMainMenu::OpenHostMenu);
 
-	if (!ensure(btn_JoinGame != nullptr)) return false;
+	if (!ensure(btn_JoinGame != nullptr)) return;
 	btn_JoinGame->OnClicked.AddDynamic(this, &UMainMenu::OpenJoinMenu);
 
-	if (!ensure(btn_Quit != nullptr)) return false;
+	if (!ensure(btn_Quit != nullptr)) return;
 	btn_Quit->OnClicked.AddDynamic(this, &UMainMenu::QuitPressed);
 	
 	JoinGameButton = WBP_JoinGameScreen->btn_JoinSelectedGame;
@@ -41,8 +48,6 @@ bool UMainMenu::Initialize()
 
 	HostGameButton = WBP_HostGameScreen->btn_HostGame;
 	HostGameButton->OnClicked.AddDynamic(this, &UMainMenu::HostServer);
-
-	return true;
 }
 
 void UMainMenu::Login()
