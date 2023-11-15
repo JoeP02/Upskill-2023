@@ -6,7 +6,9 @@
 #include "MenuWidget.h"
 #include "OnlineSubsystemTypes.h"
 #include "Blueprint/UserWidget.h"
+#include <Components/ExpandableArea.h>
 #include "InviteWidget.generated.h"
+
 
 /**
  * 
@@ -25,8 +27,14 @@ public:
 
 	TSubclassOf<UUserWidget> InviteSlotClass;
 
+	UPROPERTY(Meta = (BindWidget)) UExpandableArea* OnlineExpandArea;
+	UPROPERTY(Meta = (BindWidget)) UExpandableArea* OfflineExpandArea;
+
 	UPROPERTY(Meta = (BindWidget)) class UPanelWidget* OnlineFriendList;
 	UPROPERTY(Meta = (BindWidget)) class UPanelWidget* OfflineFriendList;
+
+	UPROPERTY(Meta = (BindWidget)) class UTextBlock* OnlineNumberText;
+	UPROPERTY(Meta = (BindWidget)) class UTextBlock* OfflineNumberText;
 
 	UFUNCTION(BlueprintCallable) void RefreshFriendList();
 	UFUNCTION(BlueprintCallable) void GetAllFriends();

@@ -250,6 +250,7 @@ void UEOSGameInstance::CreateSession()
 		if (SessionInterface.IsValid())
 		{
 			FOnlineSessionSettings SessionSettings;
+
 			if (IOnlineSubsystem::Get()->GetSubsystemName() == "NULL")
 			{
 				SessionSettings.bIsLANMatch = true;
@@ -344,6 +345,7 @@ void UEOSGameInstance::FindSession()
 				SearchSettings = MakeShareable(new FOnlineSessionSearch());
 				SearchSettings->QuerySettings.Set(SEARCH_KEYWORDS, FString("UpskillLobby"), EOnlineComparisonOp::Equals);
 				SearchSettings->QuerySettings.Set(SEARCH_LOBBIES, true, EOnlineComparisonOp::Equals);
+				SearchSettings->bIsLanQuery = bIsLAN;
 				
 				SessionPtr->OnFindSessionsCompleteDelegates.AddUObject(this, &UEOSGameInstance::OnFindSessionsComplete);
 				SessionPtr->FindSessions(0, SearchSettings.ToSharedRef());

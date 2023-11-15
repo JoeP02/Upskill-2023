@@ -83,7 +83,7 @@ public:
 
 	TArray<TSharedRef<FOnlineFriend>> AllFriends;
 	
-	UPROPERTY(EditAnywhere) bool bIsLAN = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool bIsLAN = false;
 
 	FString DesiredServerName = "Server Of Testing";
 	FString DesiredServerAddress;
