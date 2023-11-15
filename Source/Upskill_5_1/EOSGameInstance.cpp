@@ -107,7 +107,6 @@ void UEOSGameInstance::Host(FString ServerName, FString ServerAddress)
 	UE_LOG(LogTemp, Warning, TEXT("Host Called Game Instance"));
 	
 	DesiredServerName = ServerName;
-	DesiredServerAddress = ServerAddress;
 	
 	if (SessionInterface.IsValid())
 	{

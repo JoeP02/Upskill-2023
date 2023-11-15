@@ -84,8 +84,8 @@ void UMainMenu::HostServer()
 		// FString* Map = Maps.Find("null");
 		// FString* GameMode = GameModes.Find("null");
 
-		FString ServerName = "Session Name";
-		MenuInterface->Host(ServerName, "/Game/Levels/Barnyard?Listen");
+		FString ServerName = "Session Name Test";
+		MenuInterface->Host(ServerName, FString());
 	}
 	else
 	{
