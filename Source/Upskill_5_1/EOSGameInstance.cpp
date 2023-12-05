@@ -167,12 +167,12 @@ void UEOSGameInstance::RefreshServerList()
 	}
 }
 
-void UEOSGameInstance::LoadMainMenu()
+void UEOSGameInstance::LoadMainMenu(FString Options)
 {
 	APlayerController* PlayerController = GetFirstLocalPlayerController();
 	if (!ensure(PlayerController != nullptr)) return;
 
-	PlayerController->ClientTravel("/Game/MenuSystem/Maps/MainMenu", ETravelType::TRAVEL_Absolute);
+	PlayerController->ClientTravel("/Game/MenuSystem/Maps/MainMenu" + Options, ETravelType::TRAVEL_Absolute);
 }
 
 FText UEOSGameInstance::GetPlayerUsername()
@@ -308,7 +308,7 @@ void UEOSGameInstance::OnCreateSessionComplete(FName SessionName, bool bWasSucce
 
 	World->ServerTravel("/Game/Levels/Lobby?listen");
 
-	UE_LOG(LogTemp, Warning, TEXT("JPG - End Of OnCreateSessionComplete"));
+	UE_LOG(LogTemp, Warning, TEXT("End Of OnCreateSessionComplete"));
 }
 
 void UEOSGameInstance::DestroySession()
@@ -353,6 +353,10 @@ void UEOSGameInstance::FindSession()
 				//SessionPtr->SendSessionInviteToFriend()
 			}
 		}
+	}
+	else 
+	{
+		CreateErrorScreen("User Not Logged In - Please Make Sure Your Are Logged In And Try Again");
 	}
 }
 
@@ -470,7 +474,8 @@ void UEOSGameInstance::OnReadFriendsListComplete(int32 LocalUserNum, bool bWasSu
 void UEOSGameInstance::OnNetworkFailure(UWorld* World, UNetDriver* NetDriver, ENetworkFailure::Type FailureType,
 	const FString& ErrorString)
 {
-	LoadMainMenu();
+	CreateErrorScreen("Error - Network Failure");
+	LoadMainMenu("?NetworkError");
 }
 
 void UEOSGameInstance::SessionInviteReceived(const FUniqueNetId& UserId, const FUniqueNetId& FriendId, const FString& String,

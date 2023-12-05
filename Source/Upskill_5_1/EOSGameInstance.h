@@ -50,7 +50,7 @@ public:
 	/*
 	 **** Error Screen ****
 	 */
-	void CreateErrorScreen(FString ErrorMessage);
+	UFUNCTION(BlueprintCallable) void CreateErrorScreen(FString ErrorMessage);
 
 	/*
 	 **** Online ****
@@ -58,7 +58,7 @@ public:
 	UFUNCTION(Exec) void Host(FString ServerName, FString ServerAddress) override;
 	UFUNCTION(Exec) void Join(uint32 Index) override;
 	UFUNCTION(Exec) void RefreshServerList() override;
-	UFUNCTION(Exec) virtual void LoadMainMenu() override;
+	UFUNCTION(Exec) virtual void LoadMainMenu(FString Options) override;
 
 	UFUNCTION(Exec) FText GetPlayerUsername();
 

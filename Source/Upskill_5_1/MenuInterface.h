@@ -21,7 +21,7 @@ class UPSKILL_5_1_API IMenuInterface
 public:
 	virtual void Host(FString ServerName, FString ServerAddress) = 0;
 	virtual void Join(uint32 Index) = 0;
-	virtual void LoadMainMenu() = 0;
+	virtual void LoadMainMenu(FString Options) = 0;
 	virtual void RefreshServerList() = 0;
 	virtual void Login() = 0;
 };

@@ -10,6 +10,7 @@
 #include "Components/EditableTextBox.h"
 #include "Components/TextBlock.h"
 #include "Components/WidgetSwitcher.h"
+#include <Kismet/GameplayStatics.h>
 
 UMainMenu::UMainMenu()
 {
