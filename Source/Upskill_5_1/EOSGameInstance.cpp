@@ -36,12 +36,6 @@ UEOSGameInstance::UEOSGameInstance(const FObjectInitializer &ObjectInitializer)
 
 void UEOSGameInstance::Init()
 {
-	Super::Init();
-/*
-	FCoreUObjectDelegates::PreLoadMap.AddUObject(this, &UEOSGameInstance::BeginLoadingScreen);
-	FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &UEOSGameInstance::EndLoadingScreen);
-*/
-
 	OnlineSubsystem = IOnlineSubsystem::Get();
 	SessionInterface = OnlineSubsystem->GetSessionInterface();
 	OnlineUserInterface = OnlineSubsystem->GetUserInterface();
