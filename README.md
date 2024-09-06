@@ -18,4 +18,5 @@ Players are able to create and join sessions which will take them to a lobby. On
   <li>Finding and Joining Sessions</li>
   <li>Inviting Friends</li>
   <li>Accepting Invites</li>
+  <li>Deeloper Settings for Authentication Type</li>
 </ul>
